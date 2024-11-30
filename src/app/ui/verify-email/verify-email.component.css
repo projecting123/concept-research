@@ -1,0 +1,18 @@
+.EMAIL_VERIFIED_MESSAGE{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.EMAIL_VERIFIED_MESSAGE p{
+    font-size: 2rem;
+}
+
+mat-icon{
+    font-size: 4rem;
+    height: 4rem;
+    width: 4rem;
+}

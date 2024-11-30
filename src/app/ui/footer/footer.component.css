@@ -1,0 +1,20 @@
+.mat-icon{
+    font-size: 16px;
+    line-height: unset;
+    width: unset;
+    position: relative;
+    top: 0.4rem;
+}
+
+.footer_container{
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10rem;
+}
+
+.footer_container li{
+    list-style: none;
+}

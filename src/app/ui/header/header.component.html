@@ -1,0 +1,40 @@
+<div>
+    <ul class="header">
+        <div class="leftNav">
+            <button (click)="openSidebar()"><mat-icon>menu</mat-icon></button>
+            <img src="logo.ico" alt="Logo">
+        </div>
+        @defer () {
+        <div class="rightNav">
+            <li *ngIf="!authService.isAuthorized()"><button matTooltip="Home" routerLink="/" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}"><mat-icon>home</mat-icon></button></li>
+            <li *ngIf="!authService.isAuthorized()"><button routerLink="/signup" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}" matTooltip="Create Account"><mat-icon
+                        aria-label="Create Account">person_add</mat-icon></button>
+            </li>
+            <li *ngIf="!authService.isAuthorized()"><button routerLink="/login" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}" matTooltip="Login"><mat-icon
+                        aria-label="Login">login</mat-icon></button></li>
+
+            <li *ngIf="authService.isAuthorized()"><button @icon (click)="setIsDarkMode()" [matTooltip]="settingsService.isDarkMode() ? 'Dark' : 'Light'"><mat-icon
+                        >{{settingsService.isDarkMode() ? "light_mode" : "dark_mode"}}</mat-icon></button></li>
+            <li *ngIf="authService.isAuthorized()"><button matTooltip="Profile"><mat-icon>person</mat-icon></button></li>
+            <li *ngIf="authService.isAuthorized()"><button matTooltip="Log out"
+                    (click)="logout()"><mat-icon>logout</mat-icon></button></li>
+        </div>
+        }
+
+
+        <!-- Sidebar -->
+        <div class="sidebar" #sidebar>
+            <ul class="link_container">
+                <li><a routerLink="/latest">Latest</a></li>
+                <li><a routerLink="/resources">Resources</a></li>
+                <li><a routerLink="/PYQs">PYQs</a></li>
+            </ul>
+            <button (click)="closeSidebar()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </ul>
+</div>

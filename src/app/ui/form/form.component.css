@@ -1,0 +1,149 @@
+img {
+    height: 3rem;
+    width: 4rem;
+    align-self: center;
+}
+
+.FORM_CONTAINER {
+    display: flex;
+    justify-content: center;
+    min-height: 90vh;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid;
+    padding: 10px 20px;
+    width: 350px;
+    border-radius: 5px;
+}
+
+.LOGO_AND_HEADING{
+    display: flex;
+    flex-direction: column;
+}
+#HEADING_TEXT {
+    text-align: center;
+    font-family: "Roboto Slab", serif;
+    font-weight: 400;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.INPUT_CONTAINER {
+    border: 1px solid;
+    border-radius: 2px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    transition: all 0.1s linear;
+}
+
+.STATUS_ICON{
+    padding: 0px 2px;
+    display: inline-flex;
+    color: green;
+    position: absolute;
+    right: 40px;
+    z-index: 3;
+    top: 9px;
+    background-color: #fff;
+}
+
+.STATUS_ICON.not_password{
+    right: 10px;
+    top: 10px;
+}
+
+div.INPUT_CONTAINER:focus-within {
+    border: 1px solid #136409;
+    box-shadow: 0 0 4px 1px #136409;
+}
+
+.DEFAULT_OR_UNFILLED_LABEL {
+    position: absolute;
+    left: 12px;
+    cursor: text;
+    transition: all 0.1s linear;
+    padding: 0px 4px;
+}
+
+.FILLED_OR_FOCUSED_LABEL {
+    transform: translateY(-25px);
+    left: 12px;
+    background-color: #fff;
+    font-size: 12px;
+    position: absolute;
+    padding: 0px 4px;
+    transition: all 0.1s linear;
+    z-index: 1;
+}
+
+input {
+    outline: none;
+    padding: 14px 12px;
+    background-color: rgba(0, 0, 0, 0.0);
+    flex-grow: 1;
+    position: relative;
+    z-index: 1;
+    caret-color: #136409;
+    border: none;
+}
+
+input::-ms-reveal{
+    display: none;
+}
+
+.SUBMIT_BUTTON_CONTAINER {
+    align-self: center;
+}
+
+button{
+    border: none;
+    cursor: pointer;
+}
+
+.SUBMIT_BUTTON_CONTAINER button {
+    background-color: #433878;
+    padding: 6px 10px;
+    border-radius: 4px;
+    color: white;
+    transition: all 0.1s linear;
+    box-shadow: 0 0 4px #80C4E9;
+    border: none;
+    letter-spacing: 1px;
+}
+
+
+.BUTTON_DISABLED {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.BUTTON_ALLOWED {
+    cursor: pointer;
+}
+
+.SUBMIT_BUTTON_CONTAINER .BUTTON_ALLOWED:hover{
+    box-shadow: 0 0 4px #2E236C;
+}
+
+.VISIBILITY{
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    padding: 0px 4px;
+    transition: all 0.3s linear;
+    z-index: 2;
+    display: inline-flex;
+    border-radius: 4px;
+    background-color: transparent;
+}
+
+.EMAIL_MESSAGE{
+    opacity: 0.7;
+    font-size: 12px;
+}

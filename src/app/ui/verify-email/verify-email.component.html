@@ -1,0 +1,10 @@
+<div class="EMAIL_VERIFIED_MESSAGE">
+    @if (authService.isEmailVerified()) {
+        <mat-icon>check</mat-icon>
+        <p>Your email is verified.</p>
+    }
+    @else {
+        <mat-icon>cancel</mat-icon>
+        <p>Something went wrong</p>
+    }
+</div>
