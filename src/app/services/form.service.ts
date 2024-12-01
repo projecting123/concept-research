@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidator } from '../validator';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,20 +13,12 @@ export class FormService {
   snackbar = inject(MatSnackBar)
   authService = inject(AuthService)
   router = inject(Router)
-  constructor() {
-    this.formData().statusChanges.subscribe((status: any) => {
-      this.formStatus.set(status)
-    })
-  }
-
-  formType = signal<'signup' | 'login'>('signup')
-  formData = computed<FormGroup>(() => this.formType() == 'signup' ? this.signupFormData : this.loginFormData)
+  constructor() {effect(() => this.formData().statusChanges.subscribe((status: any) => this.formStatus.set(status)))}
+  formType = signal<'signup' | 'login'>(null)
+  formStatus = signal<'VALID' | 'INVALID'>('INVALID')
   isProgressingSignupOrLogin = signal(false)
-  formStatus = signal<'INVALID' | 'VALID'>('INVALID')
-  isSubmitButtonDisabled = computed(() => {
-    if (this.formStatus() === 'VALID') return this.isProgressingSignupOrLogin()
-    return true
-  })
+  formData = computed<FormGroup>(() => this.formType() === 'signup' ? this.signupFormData : this.loginFormData)
+  isSubmitButtonDisabled = computed(() => this.formStatus() === 'INVALID' || this.isProgressingSignupOrLogin())
 
   signupFormData = new FormGroup({
     name: new FormControl("", [Validators.required]),
@@ -49,7 +41,7 @@ export class FormService {
   onBlur(event: Event) {
     const inputEl = event.target as HTMLInputElement
     const labelEl = inputEl.nextElementSibling as HTMLLabelElement
-    if(this.formData().get(inputEl.name)?.value?.length == null){
+    if (this.formData().get(inputEl.name)?.value == '' || this.formData().get(inputEl.name)?.value == null) {
       labelEl.classList.remove('FOCUSED_OR_FILLED_LABEL')
     }
   }
@@ -63,27 +55,46 @@ export class FormService {
   }
 
   submitForm() {
+    if (!navigator.onLine) return this.openSnackbar('Internet not available.')
     const formData = this.formData()
     this.isProgressingSignupOrLogin.set(true)
     if (this.formType() == 'signup') {
       const res = this.authService.signup({ name: formData.get('name')?.value, email: formData.get('email')?.value, password: formData.get('password')?.value })
-      res.subscribe((signupResponse: any) => {
-        formData.reset()
-        this.isProgressingSignupOrLogin.set(false)
-        this.openSnackbar(signupResponse.message)
-      })
-    }
-    else if (this.formType() == 'login') {
-      this.authService.login({ email: formData.get('email')?.value, password: formData.get('password')?.value }).subscribe((loginResponse: LoginResponse) => {
-        if (loginResponse.statusCode == 401 || loginResponse.statusCode == 500) {
+      res.subscribe({
+        next: (signupResponse: any) => {
           formData.reset()
           this.isProgressingSignupOrLogin.set(false)
-          this.openSnackbar(loginResponse.message)
+          this.openSnackbar(signupResponse.message)
+        },
+
+        error: () => {
+          formData.reset()
+          this.isProgressingSignupOrLogin.set(false)
+          this.openSnackbar('Try again later')
         }
-        else {
-          this.authService.setUserInfo(loginResponse.userInfo)
-          this.authService.setisAuthorized(true)
-          this.router.navigate(['/dashboard'])
+      }
+      )
+    }
+    else if (this.formType() == 'login') {
+      const res = this.authService.login({ email: formData.get('email')?.value, password: formData.get('password')?.value })
+      res.subscribe({
+        next: (loginResponse: LoginResponse) => {
+          if (loginResponse.statusCode == 401 || loginResponse.statusCode == 500) {
+            formData.reset()
+            this.isProgressingSignupOrLogin.set(false)
+            this.openSnackbar(loginResponse.message)
+          }
+          else {
+            this.authService.setUserInfo(loginResponse.userInfo)
+            this.authService.setisAuthorized(true)
+            this.router.navigate(['/dashboard'])
+          }
+        },
+
+        error: () => {
+          formData.reset()
+          this.isProgressingSignupOrLogin.set(false)
+          this.openSnackbar('Try again later')
         }
       })
     }

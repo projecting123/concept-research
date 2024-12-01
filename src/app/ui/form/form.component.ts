@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, Signal, viewChild } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
@@ -16,15 +16,18 @@ import { ActivatedRoute } from '@angular/router';
 
 })
 
-export class FormComponent {
+export class FormComponent implements OnInit {
   formService = inject(FormService)
   activatedRoute = inject(ActivatedRoute)
   constructor() {
+
+  }
+  ngOnInit(): void {
     if (this.activatedRoute.snapshot.url[0].path == 'signup') {
       this.formService.formData().reset()
       this.formService.formType.set('signup')
     }
-    else {
+    else if (this.activatedRoute.snapshot.url[0].path == 'login') {
       this.formService.formData().reset()
       this.formService.formType.set('login')
     }
