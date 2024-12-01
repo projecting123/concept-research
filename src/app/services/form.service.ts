@@ -13,8 +13,8 @@ export class FormService {
   snackbar = inject(MatSnackBar)
   authService = inject(AuthService)
   router = inject(Router)
-  constructor() { 
-    this.formData().statusChanges.subscribe((status : any) => {
+  constructor() {
+    this.formData().statusChanges.subscribe((status: any) => {
       this.formStatus.set(status)
     })
   }
@@ -24,12 +24,10 @@ export class FormService {
   isProgressingSignupOrLogin = signal(false)
   formStatus = signal<'INVALID' | 'VALID'>('INVALID')
   isSubmitButtonDisabled = computed(() => {
-    if(this.formStatus() === 'VALID'){
-      return this.isProgressingSignupOrLogin()
-    }
+    if (this.formStatus() === 'VALID') return this.isProgressingSignupOrLogin()
     return true
   })
-  
+
   signupFormData = new FormGroup({
     name: new FormControl("", [Validators.required]),
     email: new FormControl("", [Validators.required, CustomValidator.validateEmail]),
@@ -42,32 +40,37 @@ export class FormService {
     password: new FormControl('', [Validators.required, Validators.minLength(6), CustomValidator.validatePassword])
   })
 
-  openSnackbar(message: string) {
-    this.snackbar.open(message, "Ok", { duration: 2000 })
+  onFocus(event: Event) {
+    const inputEl = event.target as HTMLInputElement
+    const labelEl = inputEl.nextElementSibling as HTMLLabelElement
+    labelEl.classList.add('FOCUSED_OR_FILLED_LABEL')
   }
 
-  manage_CSS_Class_For_Focus_On(labelEl: HTMLLabelElement){
-    labelEl.classList.remove("DEFAULT_OR_UNFILLED_LABEL")
-    labelEl.classList.add("FILLED_OR_FOCUSED_LABEL")
+  onBlur(event: Event) {
+    const inputEl = event.target as HTMLInputElement
+    const labelEl = inputEl.nextElementSibling as HTMLLabelElement
+    if(this.formData().get(inputEl.name)?.value?.length == null){
+      labelEl.classList.remove('FOCUSED_OR_FILLED_LABEL')
+    }
   }
-  manage_CSS_Class_For_Blur_On(labelEl: HTMLLabelElement){
-    labelEl.classList.add("DEFAULT_OR_UNFILLED_LABEL")
-    labelEl.classList.remove("FILLED_OR_FOCUSED_LABEL")
+
+  openSnackbar(message: string) {
+    this.snackbar.open(message, "Ok", { duration: 2000 })
   }
 
   setPasswordVisibility(inputEl: HTMLInputElement) {
     inputEl.type = inputEl.type == "password" ? "text" : "password"
   }
-  
-  submitForm(){
+
+  submitForm() {
     const formData = this.formData()
     this.isProgressingSignupOrLogin.set(true)
     if (this.formType() == 'signup') {
       const res = this.authService.signup({ name: formData.get('name')?.value, email: formData.get('email')?.value, password: formData.get('password')?.value })
       res.subscribe((signupResponse: any) => {
-          formData.reset()
-          this.isProgressingSignupOrLogin.set(false)
-          this.openSnackbar(signupResponse.message)
+        formData.reset()
+        this.isProgressingSignupOrLogin.set(false)
+        this.openSnackbar(signupResponse.message)
       })
     }
     else if (this.formType() == 'login') {

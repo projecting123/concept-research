@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, Signal, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
@@ -28,21 +28,5 @@ export class FormComponent {
       this.formService.formData().reset()
       this.formService.formType.set('login')
     }
-  }
-
-  onFormSubmit() {
-    this.formService.submitForm()
-  }
-
-  onFocus(event: any) {
-    this.formService.manage_CSS_Class_For_Focus_On(event.target?.nextElementSibling)
-  }
-
-  onBlur(event: any) {
-    if (event.target.value.length == 0) this.formService.manage_CSS_Class_For_Blur_On(event.target?.nextElementSibling)
-  }
-
-  isShownPassword(inputEl: HTMLInputElement) {
-    this.formService.setPasswordVisibility(inputEl)
   }
 }

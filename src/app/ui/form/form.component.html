@@ -8,9 +8,8 @@
 
         <!-- Input Fields -->
         <div class="INPUT_CONTAINER" *ngIf="formService.formType() == 'signup'">
-            <input type="text" formControlName="name" aria-label="Name Input Field" (focus)="onFocus($event)"
-                (blur)="onBlur($event)">
-            <label htmlFor="name" class="DEFAULT_OR_UNFILLED_LABEL">Name</label>
+            <input type="text" formControlName="name" aria-label="Name Input Field" name="name" (focus)="formService.onFocus($event)" (blur)="formService.onBlur($event)">
+            <label htmlFor="name">Name</label>
             <div @icon class="STATUS_ICON not_password" *ngIf="formService.formData()?.get('name')?.valid">
                 <div><mat-icon>check_small</mat-icon></div>
             </div>
@@ -18,9 +17,8 @@
 
         <div>
             <div class="INPUT_CONTAINER">
-                <input type="email" formControlName="email" aria-label="Email Input Field" (focus)="onFocus($event)"
-                    (blur)="onBlur($event)">
-                <label htmlFor="email" class="DEFAULT_OR_UNFILLED_LABEL">Email</label>
+                <input type="email" formControlName="email" aria-label="Email Input Field" name="email" (focus)="formService.onFocus($event)" (blur)="formService.onBlur($event)">
+                <label htmlFor="email">Email</label>
                 <div @icon class="STATUS_ICON not_password"
                     *ngIf="formService.formData().get('email')?.valid">
                     <div><mat-icon>check_small</mat-icon></div>
@@ -31,28 +29,28 @@
         </div>
 
         <div class="INPUT_CONTAINER">
-            <input #pass type="password" formControlName="password" aria-label="Password Input Field"
-                (focus)="onFocus($event)" (blur)="onBlur($event)">
-            <label htmlFor="password" class="DEFAULT_OR_UNFILLED_LABEL">Password</label>
+            <input #passwordInput type="password" formControlName="password" aria-label="Password Input Field" name="password"
+            (focus)="formService.onFocus($event)" (blur)="formService.onBlur($event)">
+            <label htmlFor="password">Password</label>
             <div @icon class="STATUS_ICON" *ngIf="formService.formData().get('password')?.valid">
                 <div><mat-icon>check_small</mat-icon></div>
             </div>
             <button @icon type="button" class="VISIBILITY"
                 *ngIf="formService.formData().get('password')?.value?.length > 0"
-                (click)="isShownPassword(pass)"><mat-icon>{{pass.type == "password" ? "visibility" :
+                (click)="formService.setPasswordVisibility(passwordInput)"><mat-icon>{{passwordInput.type == "password" ? "visibility" :
                     "visibility_off"}}</mat-icon></button>
         </div>
 
         <div class="INPUT_CONTAINER" *ngIf="formService.formType() == 'signup'">
-            <input #cpass type="password" formControlName="confirm_password" aria-label="Confirm Password Input Field"
-                (focus)="onFocus($event)" (blur)="onBlur($event)">
-            <label htmlFor="confirm_password" class="DEFAULT_OR_UNFILLED_LABEL">Confirm Password</label>
+            <input #confirmPasswordInput type="password" formControlName="confirm_password" aria-label="Confirm Password Input Field" name="confirm_password"
+            (focus)="formService.onFocus($event)" (blur)="formService.onBlur($event)">
+            <label htmlFor="confirm_password">Confirm Password</label>
             <div @icon class="STATUS_ICON" *ngIf="formService.formData().get('confirm_password')?.valid">
                 <div><mat-icon>check_small</mat-icon></div>
             </div>
             <button @icon type="button" class="VISIBILITY"
                 *ngIf="formService.formData().get('confirm_password')?.value?.length > 0"
-                (click)="isShownPassword(cpass)"><mat-icon>{{cpass.type == "password" ? "visibility" :
+                (click)="formService.setPasswordVisibility(confirmPasswordInput)"><mat-icon>{{confirmPasswordInput.type == "password" ? "visibility" :
                     "visibility_off"}}</mat-icon></button>
         </div>
 
@@ -60,7 +58,7 @@
         <div class="SUBMIT_BUTTON_CONTAINER">
             <button type="button" [ngClass]="formService.isSubmitButtonDisabled() ? 'BUTTON_DISABLED' : 'BUTTON_ALLOWED'"
                 aria-label="Submit Button" [disabled]="formService.isSubmitButtonDisabled()"
-                (click)="onFormSubmit()">{{formService.isProgressingSignupOrLogin() ? 'Please wait' : 'Submit'}}</button>
+                (click)="formService.submitForm()">{{formService.isProgressingSignupOrLogin() ? 'Please wait' : 'Submit'}}</button>
         </div>
     </form>
     }

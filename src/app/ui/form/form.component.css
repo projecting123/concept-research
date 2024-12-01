@@ -25,6 +25,7 @@ form {
     display: flex;
     flex-direction: column;
 }
+
 #HEADING_TEXT {
     text-align: center;
     font-family: "Roboto Slab", serif;
@@ -63,34 +64,29 @@ div.INPUT_CONTAINER:focus-within {
     box-shadow: 0 0 4px 1px #136409;
 }
 
-.DEFAULT_OR_UNFILLED_LABEL {
-    position: absolute;
-    left: 12px;
-    cursor: text;
-    transition: all 0.1s linear;
-    padding: 0px 4px;
-}
-
-.FILLED_OR_FOCUSED_LABEL {
-    transform: translateY(-25px);
-    left: 12px;
-    background-color: #fff;
-    font-size: 12px;
-    position: absolute;
-    padding: 0px 4px;
-    transition: all 0.1s linear;
-    z-index: 1;
-}
-
 input {
     outline: none;
     padding: 14px 12px;
-    background-color: rgba(0, 0, 0, 0.0);
+    background-color: transparent;
     flex-grow: 1;
     position: relative;
     z-index: 1;
     caret-color: #136409;
     border: none;
+}
+
+label{
+    position: absolute;
+    left: 10px;
+    cursor: text;
+    padding: 0px 4px;
+    transition: all 0.1s linear;
+}
+
+.FOCUSED_OR_FILLED_LABEL {
+    transform: translateY(-25px);
+    background-color: #fff;
+    font-size: 12px;
 }
 
 input::-ms-reveal{
