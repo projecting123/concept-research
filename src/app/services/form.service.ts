@@ -13,9 +13,9 @@ export class FormService {
   snackbar = inject(MatSnackBar)
   authService = inject(AuthService)
   router = inject(Router)
-  constructor() {effect(() => this.formData().statusChanges.subscribe((status: any) => this.formStatus.set(status)))}
+  constructor() {effect(() => this.formData().statusChanges.subscribe(updatedStatus => this.formStatus.set(updatedStatus)))}
   formType = signal<'signup' | 'login'>(null)
-  formStatus = signal<'VALID' | 'INVALID'>('INVALID')
+  formStatus = signal<any>('INVALID')
   isProgressingSignupOrLogin = signal(false)
   formData = computed<FormGroup>(() => this.formType() === 'signup' ? this.signupFormData : this.loginFormData)
   isSubmitButtonDisabled = computed(() => this.formStatus() === 'INVALID' || this.isProgressingSignupOrLogin())
@@ -41,13 +41,14 @@ export class FormService {
   onBlur(event: Event) {
     const inputEl = event.target as HTMLInputElement
     const labelEl = inputEl.nextElementSibling as HTMLLabelElement
-    if (this.formData().get(inputEl.name)?.value == '' || this.formData().get(inputEl.name)?.value == null) {
+    const currentInputValue = this.formData().get(inputEl.name)?.value
+    if (currentInputValue == '' || currentInputValue == null) {
       labelEl.classList.remove('FOCUSED_OR_FILLED_LABEL')
     }
   }
 
   openSnackbar(message: string) {
-    this.snackbar.open(message, "Ok", { duration: 2000 })
+    this.snackbar.open(message, "Ok", { duration: 2500 })
   }
 
   setPasswordVisibility(inputEl: HTMLInputElement) {
@@ -70,7 +71,7 @@ export class FormService {
         error: () => {
           formData.reset()
           this.isProgressingSignupOrLogin.set(false)
-          this.openSnackbar('Try again later')
+          this.openSnackbar('Something went wrong')
         }
       }
       )
@@ -94,7 +95,7 @@ export class FormService {
         error: () => {
           formData.reset()
           this.isProgressingSignupOrLogin.set(false)
-          this.openSnackbar('Try again later')
+          this.openSnackbar('Something went wrong')
         }
       })
     }

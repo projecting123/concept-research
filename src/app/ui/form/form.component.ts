@@ -16,13 +16,10 @@ import { ActivatedRoute } from '@angular/router';
 
 })
 
-export class FormComponent implements OnInit {
+export class FormComponent {
   formService = inject(FormService)
   activatedRoute = inject(ActivatedRoute)
   constructor() {
-
-  }
-  ngOnInit(): void {
     if (this.activatedRoute.snapshot.url[0].path == 'signup') {
       this.formService.formData().reset()
       this.formService.formType.set('signup')

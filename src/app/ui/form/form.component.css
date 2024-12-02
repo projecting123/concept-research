@@ -60,8 +60,8 @@ form {
 }
 
 div.INPUT_CONTAINER:focus-within {
-    border: 1px solid #136409;
-    box-shadow: 0 0 4px 1px #136409;
+    border: 1px solid #433878;
+    box-shadow: 0 0 3px 1px #433878;
 }
 
 input {
