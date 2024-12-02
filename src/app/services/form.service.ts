@@ -13,7 +13,7 @@ export class FormService {
   snackbar = inject(MatSnackBar)
   authService = inject(AuthService)
   router = inject(Router)
-  constructor() {effect(() => this.formData().statusChanges.subscribe(updatedStatus => this.formStatus.set(updatedStatus)))}
+  constructor() { effect(() => this.formData().statusChanges.subscribe(updatedStatus => this.formStatus.set(updatedStatus))) }
   formType = signal<'signup' | 'login'>(null)
   formStatus = signal<any>('INVALID')
   isProgressingSignupOrLogin = signal(false)
@@ -64,12 +64,14 @@ export class FormService {
       res.subscribe({
         next: (signupResponse: any) => {
           formData.reset()
+          this.removeFocusClasses()
           this.isProgressingSignupOrLogin.set(false)
           this.openSnackbar(signupResponse.message)
         },
 
         error: () => {
           formData.reset()
+          this.removeFocusClasses()
           this.isProgressingSignupOrLogin.set(false)
           this.openSnackbar('Something went wrong')
         }
@@ -82,6 +84,7 @@ export class FormService {
         next: (loginResponse: LoginResponse) => {
           if (loginResponse.statusCode == 401 || loginResponse.statusCode == 500) {
             formData.reset()
+            this.removeFocusClasses()
             this.isProgressingSignupOrLogin.set(false)
             this.openSnackbar(loginResponse.message)
           }
@@ -94,10 +97,16 @@ export class FormService {
 
         error: () => {
           formData.reset()
+          this.removeFocusClasses()
           this.isProgressingSignupOrLogin.set(false)
           this.openSnackbar('Something went wrong')
         }
       })
     }
+  }
+
+  removeFocusClasses() {
+    const labels = document.querySelectorAll('label')
+    labels.forEach(label => label.classList.remove('FOCUSED_OR_FILLED_LABEL'))
   }
 }
