@@ -3,7 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { icon } from '../../animation/icon';
-import { componentAnimation } from '../../animation/component';
 import { FormService } from '../../services/form.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -12,8 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   imports: [ReactiveFormsModule, NgClass, MatIcon, NgIf],
   templateUrl: './form.component.html',
   styleUrl: './form.component.css',
-  animations: [icon, componentAnimation],
-
+  animations: [icon],
 })
 
 export class FormComponent {

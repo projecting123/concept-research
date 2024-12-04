@@ -18,3 +18,18 @@ body {
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.ng-star-inserted{
+    animation: component 0.15s ease-in-out;
+}
+
+@keyframes component{
+    0%{
+        opacity: 0;
+        transform: scale(0.75);
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
