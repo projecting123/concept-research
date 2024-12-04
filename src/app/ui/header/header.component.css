@@ -5,7 +5,8 @@
     align-items: center;
     padding: 0 2rem;
     position: relative;
-    box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);
+    background: #81BFDA;
+    box-shadow: 0 0 5px 1px #B1F0F7;
 }
 
 img{
@@ -25,7 +26,7 @@ img{
 
 .sidebar{
     position: absolute;
-    background-color: #83d68a;
+    background-color: #B1F0F7;
     position: fixed;
     width: 70vw;
     inset: 0;
@@ -59,10 +60,10 @@ img{
     list-style: none;
 }
 
-/* Buttons styles */
+
 .leftNav button{
     border: none;
-    background-color: #fff;
+    background-color: transparent;
     cursor: pointer;
 }
 
