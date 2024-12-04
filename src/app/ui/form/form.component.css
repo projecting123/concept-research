@@ -1,5 +1,6 @@
 :host{
-    --formBackgroundColor: #D4EBF8
+    --formBackgroundColor: #D4EBF8;
+    --formBoxShadowColor: #1F509A
 }
 
 img {
@@ -22,7 +23,7 @@ form {
     padding: 10px 20px;
     width: 350px;
     border-radius: 5px;
-    box-shadow: 0 0 4px 1px #1F509A;
+    box-shadow: 0 0 4px 1px var(--formBoxShadowColor);
     background: var(--formBackgroundColor);
 }
 

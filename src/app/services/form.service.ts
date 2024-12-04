@@ -21,11 +21,11 @@ export class FormService {
   isSubmitButtonDisabled = computed(() => this.formStatus() === 'INVALID' || this.isProgressingSignupOrLogin())
 
   signupFormData = new FormGroup({
-    name: new FormControl("", [Validators.required]),
-    email: new FormControl("", [Validators.required, CustomValidator.validateEmail]),
+    name: new FormControl("", [Validators.required, CustomValidator.name_space]),
+    email: new FormControl("", [Validators.required,, CustomValidator.validateEmail]),
     password: new FormControl("", [Validators.required, Validators.minLength(6), CustomValidator.validatePassword]),
     confirm_password: new FormControl("", [Validators.required, Validators.minLength(6), CustomValidator.validatePassword, CustomValidator.mustMatch2])
-  }, { validators: CustomValidator.mustMatch })
+  }, { validators: CustomValidator.parentValidator })
 
   loginFormData = new FormGroup({
     email: new FormControl('', [Validators.required, CustomValidator.validateEmail]),

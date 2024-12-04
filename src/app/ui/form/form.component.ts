@@ -26,5 +26,6 @@ export class FormComponent {
       this.formService.formData().reset()
       this.formService.formType.set('login')
     }
+    this.formService.formData().valueChanges.subscribe(() => console.log(this.formService.formData()))
   }
 }
