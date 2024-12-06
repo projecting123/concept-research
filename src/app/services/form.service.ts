@@ -32,21 +32,6 @@ export class FormService {
     password: new FormControl('', [Validators.required, Validators.minLength(6), CustomValidator.validatePassword])
   })
 
-  onFocus(event: Event) {
-    const inputEl = event.target as HTMLInputElement
-    const labelEl = inputEl.nextElementSibling as HTMLLabelElement
-    labelEl.classList.add('FOCUSED_OR_FILLED_LABEL')
-  }
-
-  onBlur(event: Event) {
-    const inputEl = event.target as HTMLInputElement
-    const labelEl = inputEl.nextElementSibling as HTMLLabelElement
-    const currentInputValue = this.formData().get(inputEl.name)?.value
-    if (currentInputValue == '' || currentInputValue == null) {
-      labelEl.classList.remove('FOCUSED_OR_FILLED_LABEL')
-    }
-  }
-
   openSnackbar(message: string) {
     this.snackbar.open(message, "Ok", { duration: 2500 })
   }

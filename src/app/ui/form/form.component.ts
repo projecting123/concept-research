@@ -5,10 +5,12 @@ import { MatIcon } from '@angular/material/icon';
 import { icon } from '../../animation/icon';
 import { FormService } from '../../services/form.service';
 import { ActivatedRoute } from '@angular/router';
+import { FocusblurDirective } from '../../directives/focusblur.directive';
+import { ButtonDirective } from '../../directives/button.directive';
 
 @Component({
   selector: 'app-form',
-  imports: [ReactiveFormsModule, NgClass, MatIcon, NgIf],
+  imports: [ReactiveFormsModule, MatIcon, NgIf, FocusblurDirective, ButtonDirective],
   templateUrl: './form.component.html',
   styleUrl: './form.component.css',
   animations: [icon],
@@ -26,6 +28,5 @@ export class FormComponent {
       this.formService.formData().reset()
       this.formService.formType.set('login')
     }
-    this.formService.formData().valueChanges.subscribe(() => console.log(this.formService.formData()))
   }
 }
