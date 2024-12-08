@@ -1,24 +1,20 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidator } from '../validator';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthService } from './auth.service';
-import { Router } from '@angular/router';
-import { LoginResponse } from '../../interfaces/auth';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormService {
-  snackbar = inject(MatSnackBar)
-  authService = inject(AuthService)
   router = inject(Router)
-  constructor() { effect(() => this.formData().statusChanges.subscribe(updatedStatus => this.formStatus.set(updatedStatus))) }
+  document = inject(DOCUMENT)
+  constructor() { 
+  }
+
   formType = signal<'signup' | 'login'>(null)
-  formStatus = signal<any>('INVALID')
-  isProgressingSignupOrLogin = signal(false)
   formData = computed<FormGroup>(() => this.formType() === 'signup' ? this.signupFormData : this.loginFormData)
-  isSubmitButtonDisabled = computed(() => this.formStatus() === 'INVALID' || this.isProgressingSignupOrLogin())
 
   signupFormData = new FormGroup({
     name: new FormControl("", [Validators.required, CustomValidator.name_space]),
@@ -32,66 +28,12 @@ export class FormService {
     password: new FormControl('', [Validators.required, Validators.minLength(6), CustomValidator.validatePassword])
   })
 
-  openSnackbar(message: string) {
-    this.snackbar.open(message, "Ok", { duration: 2500 })
-  }
-
   setPasswordVisibility(inputEl: HTMLInputElement) {
     inputEl.type = inputEl.type == "password" ? "text" : "password"
   }
 
-  submitForm() {
-    if (!navigator.onLine) return this.openSnackbar('Internet not available.')
-    const formData = this.formData()
-    this.isProgressingSignupOrLogin.set(true)
-    if (this.formType() == 'signup') {
-      const res = this.authService.signup({ name: formData.get('name')?.value, email: formData.get('email')?.value, password: formData.get('password')?.value })
-      res.subscribe({
-        next: (signupResponse: any) => {
-          formData.reset()
-          this.removeFocusClasses()
-          this.isProgressingSignupOrLogin.set(false)
-          this.openSnackbar(signupResponse.message)
-        },
-
-        error: () => {
-          formData.reset()
-          this.removeFocusClasses()
-          this.isProgressingSignupOrLogin.set(false)
-          this.openSnackbar('Something went wrong')
-        }
-      }
-      )
-    }
-    else if (this.formType() == 'login') {
-      const res = this.authService.login({ email: formData.get('email')?.value, password: formData.get('password')?.value })
-      res.subscribe({
-        next: (loginResponse: LoginResponse) => {
-          if (loginResponse.statusCode == 401 || loginResponse.statusCode == 500) {
-            formData.reset()
-            this.removeFocusClasses()
-            this.isProgressingSignupOrLogin.set(false)
-            this.openSnackbar(loginResponse.message)
-          }
-          else {
-            this.authService.setUserInfo(loginResponse.userInfo)
-            this.authService.setisAuthorized(true)
-            this.router.navigate(['/dashboard'])
-          }
-        },
-
-        error: () => {
-          formData.reset()
-          this.removeFocusClasses()
-          this.isProgressingSignupOrLogin.set(false)
-          this.openSnackbar('Something went wrong')
-        }
-      })
-    }
-  }
-
   removeFocusClasses() {
-    const labels = document.querySelectorAll('label')
+    const labels = this.document.querySelectorAll('label')
     labels.forEach(label => label.classList.remove('FOCUSED_OR_FILLED_LABEL'))
   }
 }

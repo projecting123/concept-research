@@ -1,16 +1,16 @@
 <div class="FORM_CONTAINER">
     @defer () {
-    <form action="" [formGroup]="formService.formData()">
+    <form action="" [formGroup]="fs.formData()">
         <div class="LOGO_AND_HEADING">
             <img src="logo.ico" alt="Logo image">
-            <h1 id="HEADING_TEXT">{{formService.formType() == 'signup' ? 'Create Account' : 'Login'}}</h1>
+            <h1 id="HEADING_TEXT">{{fs.formType() == 'signup' ? 'Create Account' : 'Login'}}</h1>
         </div>
 
         <!-- Input Fields -->
-        <div class="INPUT_CONTAINER" *ngIf="formService.formType() == 'signup'">
+        <div class="INPUT_CONTAINER" *ngIf="fs.formType() == 'signup'">
             <input appFocusblur type="text" formControlName="name" aria-label="Name Input Field" name="name">
             <label htmlFor="name">Name</label>
-            <div @icon class="STATUS_ICON not_password" *ngIf="formService.formData()?.get('name')?.valid">
+            <div @icon class="STATUS_ICON not_password" *ngIf="fs.formData()?.get('name')?.valid">
                 <div><mat-icon>check_small</mat-icon></div>
             </div>
         </div>
@@ -19,11 +19,11 @@
             <div class="INPUT_CONTAINER">
                 <input appFocusblur type="email" formControlName="email" aria-label="Email Input Field" name="email">
                 <label htmlFor="email">Email</label>
-                <div @icon class="STATUS_ICON not_password" *ngIf="formService.formData().get('email')?.valid">
+                <div @icon class="STATUS_ICON not_password" *ngIf="fs.formData().get('email')?.valid">
                     <div><mat-icon>check_small</mat-icon></div>
                 </div>
             </div>
-            <small class="EMAIL_MESSAGE" *ngIf="formService.formType() == 'signup'">We don't share your email with
+            <small class="EMAIL_MESSAGE" *ngIf="fs.formType() == 'signup'">We don't share your email with
                 anyone else.</small>
         </div>
 
@@ -31,28 +31,28 @@
             <input appFocusblur #passwordInput type="password" formControlName="password" aria-label="Password Input Field"
                 name="password">
             <label htmlFor="password">Password</label>
-            <div @icon class="STATUS_ICON" *ngIf="formService.formData().get('password')?.valid">
+            <div @icon class="STATUS_ICON" *ngIf="fs.formData().get('password')?.valid">
                 <div><mat-icon>check_small</mat-icon></div>
             </div>
             <button [appButton]="passwordInput" @icon type="button" class="VISIBILITY"
-                *ngIf="formService.formData().get('password')?.value?.length > 0"><mat-icon>{{passwordInput.type == "password"
+                *ngIf="fs.formData().get('password')?.value?.length > 0"><mat-icon>{{passwordInput.type == "password"
                     ? "visibility" :
                     "visibility_off"}}</mat-icon></button>
         </div>
 
-        <div class="INPUT_CONTAINER" *ngIf="formService.formType() == 'signup'">
+        <div class="INPUT_CONTAINER" *ngIf="fs.formType() == 'signup'">
             <input appFocusblur #cpassInput type="password" formControlName="confirm_password" aria-label="Confirm Password Input Field" name="confirm_password">
             <label htmlFor="confirm_password">Confirm Password</label>
-            <div @icon class="STATUS_ICON" *ngIf="formService.formData().get('confirm_password')?.valid">
+            <div @icon class="STATUS_ICON" *ngIf="fs.formData().get('confirm_password')?.valid">
                 <div><mat-icon>check_small</mat-icon></div>
             </div>
             <button [appButton]="cpassInput" @icon type="button" class="VISIBILITY"
-                *ngIf="formService.formData().get('confirm_password')?.value?.length > 0"><mat-icon>{{cpassInput.type == "password" ? "visibility" : "visibility_off"}}</mat-icon></button>
+                *ngIf="fs.formData().get('confirm_password')?.value?.length > 0"><mat-icon>{{cpassInput.type == "password" ? "visibility" : "visibility_off"}}</mat-icon></button>
         </div>
 
         <!-- Submit Button -->
         <div class="SUBMIT_BUTTON_CONTAINER">
-            <button appButton="SUBMIT_BTN" type="button">{{this.formService.isProgressingSignupOrLogin() ? 'Please wait' : 'Submit'}}</button>
+            <button appButton="SUBMIT_BTN" type="button">Submit</button>
         </div>
     </form>
     }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, Signal, viewChild } from '@angular/core';
+import { Component, inject, OnInit, Signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip'
@@ -10,11 +10,11 @@ import { SettingsService } from '../../services/settings.service';
   selector: 'app-header',
   imports: [RouterLink, RouterLinkActive, MatIcon, MatTooltipModule, NgIf],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrl: './header.component.css',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   sidebar: Signal<any> = viewChild('sidebar');
-  authService = inject(AuthService)
+  auth = inject(AuthService)
   settingsService = inject(SettingsService)
   router = inject(Router)
   constructor() {
@@ -29,19 +29,5 @@ export class HeaderComponent implements OnInit {
 
   closeSidebar() {
     this.sidebar().nativeElement.style.transform = 'translateX(-100%)'
-  }
-
-  logout(){
-    this.authService.logout().subscribe(data => {
-      this.authService.removeUserInfo()
-      this.authService.setisAuthorized(false)
-      this.router.navigate(['/login'])
-    })
-  }
-
-  ngOnInit() {
-    this.authService.loggedInEvent.subscribe((isAuthorized: boolean) => {
-      this.authService.isAuthorized.set(isAuthorized)
-    })
   }
 }

@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgClass, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { icon } from '../../animation/icon';
 import { FormService } from '../../services/form.service';
 import { ActivatedRoute } from '@angular/router';
 import { FocusblurDirective } from '../../directives/focusblur.directive';
 import { ButtonDirective } from '../../directives/button.directive';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-form',
@@ -17,16 +18,16 @@ import { ButtonDirective } from '../../directives/button.directive';
 })
 
 export class FormComponent {
-  formService = inject(FormService)
-  activatedRoute = inject(ActivatedRoute)
+  fs = inject(FormService)
+  activeRoute = inject(ActivatedRoute)
   constructor() {
-    if (this.activatedRoute.snapshot.url[0].path == 'signup') {
-      this.formService.formData().reset()
-      this.formService.formType.set('signup')
+    if (this.activeRoute.snapshot.url[0].path == 'signup') {
+      this.fs.formData().reset()
+      this.fs.formType.set('signup')
     }
-    else if (this.activatedRoute.snapshot.url[0].path == 'login') {
-      this.formService.formData().reset()
-      this.formService.formType.set('login')
+    else if (this.activeRoute.snapshot.url[0].path == 'login') {
+      this.fs.formData().reset()
+      this.fs.formType.set('login')
     }
   }
 }
